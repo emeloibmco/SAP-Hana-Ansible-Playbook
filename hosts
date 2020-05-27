@@ -1,0 +1,3 @@
+<IP-of-bare-metal> ansible_connection=ssh ansible_user=root ansible_password=<password>
+
+

@@ -1,0 +1,67 @@
+- hosts: <IP-of-bare-metal>
+  become: yes
+
+  tasks:
+    - name: 1. create the working directory
+      file:
+        path: /home/saphana
+        state: directory
+
+    - name: 2. Install package group sap-hana
+      zypper:
+        type: pattern
+        name: sap-hana
+        state: latest
+
+    - name: 3. Install a list of packages required
+      zypper:
+        name:
+          - java
+          - libatomic1
+          - nfs-utils
+          - uuidd
+          - tcsh
+          - psmisc
+          - glibc
+        state: present
+
+    - name: 4. saptune solution apply HANA
+      command: saptune solution apply HANA
+
+    - name: 5. saptune daemon start
+      command: saptune daemon start
+
+    - name: 6. check if the download manager exists
+      stat:
+        path: /home/saphana/HXEDownloadManager.jar
+      register: stat_result
+
+    - name: 7. Download manager
+      shell:
+        cmd: wget --referer="https://go.sap.com/" -O /home/saphana/HXEDownloadManager.jar https://d149oh3iywgk04.cloudfront.net/dwnldmgr/HANA2latest/HXEDownloadManager.jar
+        chdir: /home/saphana
+      when: stat_result.stat.exists == False
+
+    - name: 8. Download sap hana installer
+      shell:
+        cmd: java -jar HXEDownloadManager.jar -d . linuxx86_64 installer hxe.tgz
+        chdir: /home/saphana
+      when: stat_result.stat.exists == False
+
+    - name: 9. Unpacket installer
+      shell:
+        cmd: tar xzvf hxe.tgz
+        chdir: /home/saphana
+      when: stat_result.stat.exists == False
+
+    - name: 10. Process HANA Configfile Template
+      template:
+        src: "./config.j2"
+        dest: "/home/saphana/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_X86_64/configfile.cfg"
+
+    - name: 11. Install SAP HANA
+      command: "/home/saphana/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_X86_64/hdblcm  --configfile=/home/saphana/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_X86_64/configfile.cfg -b"
+      async: 900
+      poll: 60
+
+      
