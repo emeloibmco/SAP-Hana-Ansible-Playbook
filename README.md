@@ -1,17 +1,17 @@
-# SAP-Hana-Ansible-Playbook 💻
+# Anisble-SAP-HANA 💻
 
 ### 1. Información Básicos: 📌
 Este playbook configura el sistema Operativo (OS) SUSE SLES for SAP Business Applications 15.0 de acuerdo con las notas SAP aplicables para que se pueda instalar cualquier software SAP. Además Instala SAP HANA EXPRESS 2.0 en un Bare metal con (OS) SUSE SLES.
 ### 2. Pre-Requisitos 📋
 
-#### 2.1 Requisitos de software.
+#### 2.1 Requisitos de software de maquina donde se va instalar SAP HANA.
 Compruebe si el sistema tiene el software requerido para instalar y ejecutar con éxito SAP HANA 2.0, edición express
 #### A).Sistema operativo :
 * SUSE Linux Enterprise Server para aplicaciones SAP, 12.1, 12.2, 12.3 (SPS 02 Rev 23 o superior)
-* Java Runtime Environment (JRE) 8 o superior : si planea utilizar el Administrador de descargas de edición expresa de SAP HANA 2.0 para Windows o Linux, necesita el JRE de 64 bits. Si planea usar el Administrador de descargas independiente de la plataforma, puede usar las versiones de 32 o 64 bits. Puede descargar SAP JVM (64 bits) desde https://tools.hana.ondemand.com/#cloud .
-#### 2.1 Requisitos de hardware.
+* Java Runtime Environment (JRE) 8 o superior : si planea utilizar el Administrador de descargas de edición expresa de SAP HANA 2.0 para Windows o Linux, necesita el JRE de 64 bits. Si planea usar el Administrador de descargas independiente de la plataforma, puede usar las versiones de 32 o 64 bits. Puede descargar SAP JVM (64 bits) desde [tools-hana](https://tools.hana.ondemand.com/#cloud) .
+#### 2.2 Requisitos de hardware de maquina donde se va instalar SAP HANA.
 Compruebe si el sistema tiene el hardware requerido para instalar y ejecutar con éxito SAP HANA 2.0, edición express.
-##### A).CPU soportada:
+#### A).CPU soportada:
 * Intel 64/AMD64
 * IBM POWER 8 (with PowerVM)
 * IBM POWER 9 (with PowerVM)
@@ -24,8 +24,11 @@ El sistema operativo SUSE Linux Enterprise Server requiere un mínimo de 1024 MB
 Nota: Si está instalando en un sistema con 16 GB de RAM, aumente la cantidad de espacio de intercambio a al menos 32 GB.
 ##### D).Nucleos
 * 2 núcleos (se recomiendan 4)
+#### 2.3 Requisitos desde donde se va aplicar el playbook.
+* Instalar [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
-
+## Arquitectura
+![arquitectura](https://github.com/mariolarte19/Anisble-SAP-HANA/blob/master/SAPHANA.png)
 
 ### 3.Complete el formulario de registro
 Vaya a la página de [registro-Descargar](https://www.sap.com/cmp/td/sap-hana-express-edition.html) y haga clic en Registrarse para obtener su versión gratuita.
@@ -43,7 +46,7 @@ En esta tarea se instala paquetes tales como:
 #### 4.2 Instalar una lista de paquetes adicionales.
 * java,libatomic1,nfs-utils,tcsh,psmisc y glibc
 ( Habilitar saptune para sintonizar una aplicación SAP)
-#### 4.3 solución saptune aplicar HANA.
+#### 4.3 Solución saptune aplicar HANA.
 Utilizando saptune, se puede ajustar el sistema para SAP NetWeaver, SAP HANA / SAP Business Objects y aplicaciones SAP S / 4HANA.
 En esta tarea se configurar saptune con una solución preconfigurada la cual es HANA.Dicha solucion aplica las siguientes notas. 
 
@@ -62,8 +65,7 @@ En esta tarea se configurar saptune con una solución preconfigurada la cual es 
             Version 5 from 18.06.2018
   
 
-
-#### 4.4 saptune daemon start.
+#### 4.4 Saptune daemon start.
 En esta tarea se inicia saptune y se habilita en el arranque.
 #### 4.5 Crear directorio.
 Se crea un directorio en /home/saphana , con el fin de alojar el instalador de SAP HANA EXPRESS 2.0.
@@ -79,29 +81,53 @@ Se descarga HANA EXPRESS 2.0.
 Se decomprime el instaldor de HANA Express obteniendo hxe.tgz , setup_hxe.sh y HANA_EXPRESS_20.
 #### 4.9 Procesar la plantilla de archivo de configuración de HANA.
 Se establece la configuracion en el archivo  /home/saphana/HANA_EXPRESS_20/DATA_UNITS/HDB_SERVER_LINUX_X86_64/configfile.cfg con los siguientes parametros.
-`sid=HXE
+
+<pre><code>
+sid=HXE
 master_password=Passw0rd
 use_master_password=Passw0rd
 password=Passw0rd
 sapadm_password=Passw0rd
-system_user_password=Passw0rd`
+system_user_password=Passw0rd
+</pre></code>
+
 #### 4.10 Instalar SAP HANA.
 Instala HANA_EXPRESS_20. 😃✔️
 
 #### 5. Aplicar Playbook.
+#### A).Modificar el archivo hosts:
+Ejemplo:
+<pre><code>
+169.48.XXX.XXX 
+ansible_connection=ssh 
+ansible_user=rXXX 
+ansible_password=XXXX
+</pre></code>
+#### B).Modificar la variable hosts en el archivo sh_install.yml .
+<pre><code>
+- hosts: 169.XX.XXX.XXX
+  become: yes ......
+</pre></code>
+#### B).Aplicar playbook.
+Desde la consola de comandos nos dirigimos a la carpeta donde esta el playbook sh_install.yml y ejecutamos el siguiente comando `mnsible-playbook sh_install.yml` una vez terminado configura el sistema Operativo (OS) SUSE SLES for SAP Business Applications 15.0 e instala SAP HANA EXPRESS.😃✔️
+#### C). Verificacion.
+Podemos verificar que SAP HANA quedo instalado exitosamente iniciando la base de datos con los siguientes comandos:
+* `su - <SID>adm`
+* `HDB start`
+* `HDB stop`
 
-
-
+Para mas informacion sobre gestión del sistema SAP HANA después de la instalación [aqui](https://help.sap.com/viewer/2c1988d620e04368aa4103bf26f17727/2.0.00/en-US/cbdb1298bb5710148fd6e6fb71038ba2.html) .
 ##  Construido con 🛠️
 IBM Cloud, Ansible.
 
 ## Wiki 📖
-Para más información [Watson-Visual Recognition](https://www.ibm.com/co-es/cloud/watson-visual-recognition)
-https://documentation.suse.com/sles-sap/15-SP1/html/SLES4SAP-guide/cha-s4s-tune.html
-https://documentation.suse.com/sles-sap/15-SP1/pdf/SLES4SAP-quick_color_en.pdf
-https://people.redhat.com/mkoch/training/pc2019/labguide/#_register_for_download_hana_express
-https://blogs.sap.com/2019/06/25/sapconf-versus-saptune-in-more-detail/
-https://help.sap.com/doc/eb75509ab0fd1014a2c6ba9b6d252832/2.0.04/en-US/SAP_HANA_Administration_Guide_en.pdf
+Para más información 
+* [SAP-HANA-tune-SLES](https://documentation.suse.com/sles-sap/15-SP1/html/SLES4SAP-guide/cha-s4s-tune.html)
+* [SLES4-SAP](https://documentation.suse.com/sles-sap/15-SP1/pdf/SLES4SAP-quick_color_en.pdf)
+* [SAP-tune](https://blogs.sap.com/2019/06/25/sapconf-versus-saptune-in-more-detail/)
+* [SAP-HANA-guia-de-administracion](https://help.sap.com/doc/eb75509ab0fd1014a2c6ba9b6d252832/2.0.04/en-US/SAP_HANA_Administration_Guide_en.pdf)
 
 ## Autores ✒️
 Team IBM Cloud
+
+
