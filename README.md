@@ -1,9 +1,20 @@
-# Ansible-SAP-HANA 💻
+# Automating SAP HANA installation with Ansible on IBM IaaS
+<p align="center">
+<img width="500" alt="img8" src="src/Parnership.jpg">
+</p>
 
-![](src/Parnership.jpg)
+## Indice
 
-### 1. Información Básicos: 📌
-Este playbook configura el sistema Operativo (OS) SUSE SLES for SAP Business Applications 15.0 de acuerdo con las notas SAP aplicables para que se pueda instalar cualquier software SAP. Además Instala SAP HANA EXPRESS 2.0 en un Bare metal con (OS) SUSE SLES.
+* Descripción
+* Pre-Requisitos
+* Complete el formulario de registro
+* Descripción de Tareas Playbook
+* Aplicar Playbook
+
+
+### 1. Descripción: 📌
+Este playbook configura el sistema Operativo (OS) **SUSE SLES for SAP Business Applications 15.0** de acuerdo con las notas SAP aplicables para que se pueda instalar cualquier software SAP. Además Instala SAP HANA EXPRESS 2.0 en un Bare metal con (OS) SUSE SLES.
+
 ### 2. Pre-Requisitos 📋
 
 #### 2.1 Requisitos de software de maquina donde se va instalar SAP HANA.
