@@ -7,21 +7,23 @@
 
 * Descripción
 * Pre-Requisitos
-* Complete el formulario de registro
-* Descripción de Tareas Playbook
+* Como obtener el instalador de SAP HANA Express Edition
+* Descripción de Tareas-Playbook
 * Aplicar Playbook
 
+---
 
 ### 1. Descripción: 📌
 Este playbook configura el sistema Operativo (OS) **SUSE SLES for SAP Business Applications 15.0** de acuerdo con las notas SAP aplicables para que se pueda instalar cualquier software SAP. Además Instala SAP HANA EXPRESS 2.0 en un Bare metal con (OS) SUSE SLES.
 
+---
 ### 2. Pre-Requisitos 📋
 
 #### 2.1 Requisitos de software de maquina donde se va instalar SAP HANA.
-Compruebe si el sistema tiene el software requerido para instalar y ejecutar con éxito SAP HANA 2.0, edición express
+ Compruebe si el sistema tiene el software requerido para instalar y ejecutar con éxito SAP HANA 2.0, edición express
 #### A).Sistema operativo :
 * SUSE Linux Enterprise Server para aplicaciones SAP, 12.1, 12.2, 12.3 (SPS 02 Rev 23 o superior)
-* Java Runtime Environment (JRE) 8 o superior : si planea utilizar el Administrador de descargas de edición expresa de SAP HANA 2.0 para Windows o Linux, necesita el JRE de 64 bits. Si planea usar el Administrador de descargas independiente de la plataforma, puede usar las versiones de 32 o 64 bits. Puede descargar SAP JVM (64 bits) desde [tools-hana](https://tools.hana.ondemand.com/#cloud) .
+* Java Runtime Environment (JRE) 8 o superior : si planea utilizar el Administrador de descargas de edición expresa de SAP HANA 2.0 para Windows o Linux, necesita el JRE de 64 bits. Si planea usar el Administrador de descargas independiente de la plataforma, puede usar las versiones de 32 o 64 bits. Puede descargar SAP JVM (64 bits) desde [tools-hana](https://tools.hana.ondemand.com/#cloud).
 #### 2.2 Requisitos de hardware de maquina donde se va instalar SAP HANA.
 Compruebe si el sistema tiene el hardware requerido para instalar y ejecutar con éxito SAP HANA 2.0, edición express.
 #### A).CPU soportada:
@@ -43,13 +45,18 @@ Nota: Si está instalando en un sistema con 16 GB de RAM, aumente la cantidad de
 ## Arquitectura
 ![arquitectura](https://github.com/mariolarte19/Anisble-SAP-HANA/blob/master/SAPHANA.png)
 
-### 3.Complete el formulario de registro
+---
+
+### 3.Como obtener el instalador de SAP HANA Express Edition
 Vaya a la página de [registro-Descargar](https://www.sap.com/cmp/td/sap-hana-express-edition.html) y haga clic en Registrarse para obtener su versión gratuita.
 ##### B).Elige un administrador de descargas.
 Haga clic en el administrador de descargas que coincida con su sistema: Linux DM o Windows DM.
 ##### C).Elige un administrador de descargas.
 Guarde el archivo del administrador de descargas en su computadora portátil y ábralo. Si su sistema muestra una advertencia de seguridad cuando abre el archivo, ignore la advertencia.
-### 4.Descripción de Tareas Playbook. 📋
+
+---
+
+### 4.Descripción de Tareas-Playbook. 📋
 
 #### 4.1 Instalar grupo de paquetes sap-hana.
 En esta tarea se instala paquetes tales como: 
@@ -107,6 +114,8 @@ system_user_password=Passw0rd
 #### 4.10 Instalar SAP HANA.
 Instala HANA_EXPRESS_20. 😃✔️
 
+---
+
 #### 5. Aplicar Playbook.
 #### A).Modificar el archivo hosts:
 Ejemplo:
@@ -142,5 +151,4 @@ Para más información
 
 ## Autores ✒️
 Team IBM Cloud
-
 
